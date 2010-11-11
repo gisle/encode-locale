@@ -50,6 +50,9 @@ Encode::Locale - Determine the locale encoding
 
   $string = decode(locale => $octets);
 
+  binmode(STDIN, ":encoding(locale)");
+  binmode(STDOUT, ":encoding(locale)");
+
 =head1 DESCRIPTION
 
 Perl uses Unicode to represent strings internally but many of the interfaces it
