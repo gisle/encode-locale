@@ -10,15 +10,40 @@ use Encode ();
 use Encode::Alias ();
 
 our $ENCODING;
+our $ENCODING_OUT;
+our $ENCODING_FS;
+
+if ($^O eq "MSWin32" && !$ENCODING) {
+    # If we have the Win32::Console module installed we can ask
+    # it for the code set to use
+    eval {
+	require Win32::Console;
+	my $cp = Win32::Console::InputCP();
+	$ENCODING = "cp$cp" if $cp;
+	$cp = Win32::Console::OutputCP();
+	$ENCODING_OUT = "cp$cp" if $cp;
+    };
+    # Invoking the 'chcp' program might also work
+    if (!$ENCODING && qx(chcp) =~ /^Active code page: (\d+)/) {
+	$ENCODING = "cp$1";
+    }
+}
+
 unless ($ENCODING) {
     eval {
 	require I18N::Langinfo;
 	$ENCODING = I18N::Langinfo::langinfo(I18N::Langinfo::CODESET());
     };
-
-    # final fallback
-    $ENCODING ||= "UTF-8";
 }
+
+if ($^O eq "darwin") {
+    $ENCODING_FS ||= "UTF-8";
+}
+
+# final fallback
+$ENCODING ||= $^O eq "MSWin32" ? "cp1252" : "UTF-8";
+$ENCODING_OUT ||= $ENCODING;
+$ENCODING_FS ||= $ENCODING;
 
 unless (Encode::find_encoding($ENCODING)) {
     die "The locale codeset ($ENCODING) isn't one that perl can decode, stopped";
