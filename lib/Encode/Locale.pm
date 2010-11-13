@@ -62,10 +62,10 @@ Encode::Alias::define_alias(console_in => $ENCODING_CONSOLE_IN);
 Encode::Alias::define_alias(console_out => $ENCODING_CONSOLE_OUT);
 
 sub decode_argv {
-    my $check = @ARGV ? shift : Encode::FB_CROAK;
+    my $check = @_ ? shift : Encode::FB_CROAK;
     die if defined wantarray;
     for (@ARGV) {
-	$_ = Encode::decode(locale => $_, );
+	$_ = Encode::decode(locale => $_, $check);
     }
 }
 
@@ -120,7 +120,14 @@ In addition the following functions and variables are provided:
 
 =item decode_argv()
 
+=item decode_argv( $check )
+
 This will decode the command line arguments to perl (the C<@ARGV> array) in-place.
+
+The function will by default croak if not all the command line arguments can
+decoded.  A $check argument can be passed to modify this behaviour.  Passing
+C<Encode::FS_DEFAULT> will replace bad characters with "\x{FFFD}", the
+Unicode replacement character. See L<Encode/"Handling Malformed Data"> for details.
 
 =item env( $key )
 
