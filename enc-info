@@ -1,0 +1,23 @@
+#!/usr/bin/env perl
+
+use strict;
+use warnings;
+use lib "lib";
+
+use Encode::Locale qw($ENCODING_LOCALE $ENCODING_LOCALE_FS $ENCODING_CONSOLE_IN $ENCODING_CONSOLE_OUT);
+
+print "ENCODING_LOCALE=$ENCODING_LOCALE\n";
+print "ENCODING_LOCALE_FS=$ENCODING_LOCALE_FS\n" if $ENCODING_LOCALE ne $ENCODING_LOCALE_FS;
+if ($ENCODING_CONSOLE_IN eq $ENCODING_CONSOLE_OUT) {
+    print "ENCODING_CONSOLE=$ENCODING_CONSOLE_IN\n" if $ENCODING_CONSOLE_IN ne $ENCODING_LOCALE;
+}
+else {
+    print "ENCODING_CONSOLE_IN=$ENCODING_CONSOLE_IN\n";
+    print "ENCODING_CONSOLE_OUT=$ENCODING_CONSOLE_IN\n";
+}
+
+if (@ARGV) {
+    Encode::Locale::decode_argv();
+    require Data::Dump;
+    print "ARGV = ", Data::Dump::dump(\@ARGV), "\n";
+}

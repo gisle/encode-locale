@@ -8,9 +8,6 @@ binmode(STDIN, ":encoding(locale)") || die;
 binmode(STDOUT, ":encoding(locale)") || die;
 use Data::Dump;
 
-Encode::Locale::decode_argv();
-dd(\@ARGV);
-
 while (<STDIN>) {
     dd $_;
     s/-/—/g;
