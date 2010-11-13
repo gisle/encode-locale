@@ -56,10 +56,10 @@ unless (Encode::find_encoding($ENCODING_LOCALE)) {
     die "The locale codeset ($ENCODING_LOCALE) isn't one that perl can decode, stopped";
 }
 
-Encode::Alias::define_alias(locale => $ENCODING_LOCALE);
-Encode::Alias::define_alias(locale_fs => $ENCODING_LOCALE_FS);
-Encode::Alias::define_alias(console_in => $ENCODING_CONSOLE_IN);
-Encode::Alias::define_alias(console_out => $ENCODING_CONSOLE_OUT);
+Encode::Alias::define_alias(sub {
+    no strict 'refs';
+    return ${"ENCODING_" . uc(shift)};
+});
 
 sub decode_argv {
     my $check = @_ ? shift : Encode::FB_CROAK;
