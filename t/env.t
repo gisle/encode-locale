@@ -2,7 +2,7 @@
 
 use strict;
 use Test;
-plan tests => 6;
+plan tests => 7;
 
 use Encode::Locale qw(env);
 
