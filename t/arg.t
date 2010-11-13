@@ -4,9 +4,9 @@ use strict;
 use Test;
 plan tests => 1;
 
-use Encode::Locale qw($LOCALE_CODESET decode_argv);
+use Encode::Locale qw($ENCODING_LOCALE decode_argv);
 
-print "# LOCALE_CODESET is $LOCALE_CODESET\n";
+print "# ENCODING_LOCALE is $ENCODING_LOCALE\n";
 decode_argv();
 
 my $i;
