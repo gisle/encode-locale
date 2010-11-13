@@ -5,7 +5,7 @@ our $VERSION = "0.01";
 
 use base 'Exporter';
 our @EXPORT_OK = qw(
-    decode_argv
+    decode_argv env
     $ENCODING_LOCALE $ENCODING_FS
     $ENCODING_CONSOLE_IN $ENCODING_CONSOLE_OUT
 );
@@ -69,6 +69,21 @@ sub decode_argv {
     }
 }
 
+sub env {
+    my $k = Encode::encode(locale => shift);
+    my $old = $ENV{$k};
+    if (@_) {
+	my $v = shift;
+	if (defined $v) {
+	    $ENV{$k} = Encode::encode(locale => $v);
+	}
+	else {
+	    delete $ENV{$k};
+	}
+    }
+    return Encode::decode(locale => $old) if defined wantarray;
+}
+
 1;
 
 __END__
@@ -106,6 +121,14 @@ In addition the following functions and variables are provided:
 =item decode_argv()
 
 This will decode the command line arguments to perl (the C<@ARGV> array) in-place.
+
+=item env( $key )
+
+=item env( $key => $value )
+
+Interface to get/set environment variables.  Returns Unicode string and
+the $key and $value arguments are expected to be the same.  Passing C<undef>
+as $value deletes the variable named $key.
 
 =item $ENCODING_LOCALE
 
