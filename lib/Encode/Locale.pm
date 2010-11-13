@@ -59,7 +59,7 @@ unless (Encode::find_encoding($ENCODING_LOCALE)) {
 Encode::Alias::define_alias(sub {
     no strict 'refs';
     return ${"ENCODING_" . uc(shift)};
-});
+}, "locale");
 
 sub decode_argv {
     my $check = @_ ? shift : Encode::FB_CROAK;
