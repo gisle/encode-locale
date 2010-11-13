@@ -6,7 +6,7 @@ our $VERSION = "0.02";
 use base 'Exporter';
 our @EXPORT_OK = qw(
     decode_argv env
-    $ENCODING_LOCALE $ENCODING_FS
+    $ENCODING_LOCALE $ENCODING_LOCALE_FS
     $ENCODING_CONSOLE_IN $ENCODING_CONSOLE_OUT
 );
 
@@ -14,7 +14,7 @@ use Encode ();
 use Encode::Alias ();
 
 our $ENCODING_LOCALE;
-our $ENCODING_FS;
+our $ENCODING_LOCALE_FS;
 our $ENCODING_CONSOLE_IN;
 our $ENCODING_CONSOLE_OUT;
 
@@ -43,12 +43,12 @@ unless ($ENCODING_LOCALE) {
 }
 
 if ($^O eq "darwin") {
-    $ENCODING_FS ||= "UTF-8";
+    $ENCODING_LOCALE_FS ||= "UTF-8";
 }
 
 # final fallback
 $ENCODING_LOCALE ||= $^O eq "MSWin32" ? "cp1252" : "UTF-8";
-$ENCODING_FS ||= $ENCODING_LOCALE;
+$ENCODING_LOCALE_FS ||= $ENCODING_LOCALE;
 $ENCODING_CONSOLE_IN ||= $ENCODING_LOCALE;
 $ENCODING_CONSOLE_OUT ||= $ENCODING_CONSOLE_IN;
 
@@ -57,7 +57,7 @@ unless (Encode::find_encoding($ENCODING_LOCALE)) {
 }
 
 Encode::Alias::define_alias(locale => $ENCODING_LOCALE);
-Encode::Alias::define_alias(locale_fs => $ENCODING_FS);
+Encode::Alias::define_alias(locale_fs => $ENCODING_LOCALE_FS);
 Encode::Alias::define_alias(console_in => $ENCODING_CONSOLE_IN);
 Encode::Alias::define_alias(console_out => $ENCODING_CONSOLE_OUT);
 
@@ -135,7 +135,7 @@ as $value deletes the variable named $key.
 The encoding name determined to be suitable for the current locale.
 L<Encode> know this encoding as "locale".
 
-=item $ENCODING_FS
+=item $ENCODING_LOCALE_FS
 
 The encoding name determined to be suiteable for file system interfaces
 involving file names.
