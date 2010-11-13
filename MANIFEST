@@ -2,5 +2,6 @@ Changes
 lib/Encode/Locale.pm
 Makefile.PL
 MANIFEST			This list of files
+README.md
 t/arg.t
 t/env.t
