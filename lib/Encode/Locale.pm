@@ -129,13 +129,18 @@ decoded.  A $check argument can be passed to modify this behaviour.  Passing
 C<Encode::FB_DEFAULT> will replace bad characters with "\x{FFFD}", the
 Unicode replacement character. See L<Encode/"Handling Malformed Data"> for details.
 
-=item env( $key )
 
-=item env( $key => $value )
+=item env( $uni_key )
 
-Interface to get/set environment variables.  Returns Unicode string and
-the $key and $value arguments are expected to be the same.  Passing C<undef>
-as $value deletes the variable named $key.
+=item env( $uni_key => $uni_value )
+
+Interface to get/set environment variables.  Returns the current value as a
+Unicode string. The $uni_key and $uni_value arguments are expected to be
+Unicode strings as well.  Passing C<undef> as $uni_value deletes the
+environment variable named $uni_key.
+
+The returned value will have the characters that can't be decoded replaced by
+"\x{FFFD}", the Unicode replacement character.
 
 =item $ENCODING_LOCALE
 
