@@ -62,10 +62,9 @@ Encode::Alias::define_alias(sub {
 }, "locale");
 
 sub decode_argv {
-    my $check = @_ ? shift : Encode::FB_CROAK;
     die if defined wantarray;
     for (@ARGV) {
-	$_ = Encode::decode(locale => $_, $check);
+	$_ = Encode::decode(locale => $_, @_);
     }
 }
 
@@ -120,15 +119,17 @@ In addition the following functions and variables are provided:
 
 =item decode_argv()
 
-=item decode_argv( $check )
+=item decode_argv( Encode::FB_CROAK )
 
 This will decode the command line arguments to perl (the C<@ARGV> array) in-place.
 
-The function will by default croak if not all the command line arguments can
-decoded.  A $check argument can be passed to modify this behaviour.  Passing
-C<Encode::FB_DEFAULT> will replace bad characters with "\x{FFFD}", the
-Unicode replacement character. See L<Encode/"Handling Malformed Data"> for details.
+The function will by default replace characters that can't be decoded by
+"\x{FFFD}", the Unicode replacement character.
 
+Any argument provided is passed as CHECK to underlying Encode::decode() call.
+Pass the value C<Encode::FB_CROAK> to have the decoding croak if not all the
+command line arguments can be decoded.  See L<Encode/"Handling Malformed Data">
+for details on other options for CHECK.
 
 =item env( $uni_key )
 
