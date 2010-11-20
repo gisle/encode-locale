@@ -1,3 +1,18 @@
+## 2010-10-20  Release 0.03
+
+Changed the default for decode_argv() to match Encode's default.
+It became too strange to tell people to pass FB_DEFAULT to get the
+non-default behaviour.
+
+Changed $ENCODING_FS into $ENCODING_LOCALE_FS (as already documented below),
+but not implemented as such.
+
+Workaround for test failure where the Encode does not know about the "646"
+encoding alias.
+
+Documentation tweaks.
+
+
 ## 2010-10-13  Release 0.02
 
 ...where I realized that I could not get away with a single locale encoding.
@@ -22,6 +37,7 @@ This release also introduce the function env() as a Unicode interface to the
 %ENV hash (the process environment variables).  We don't want to decode the ENV
 %values in-place because this also affects what the child processes
 observes.  The %ENV hash should always contain byte strings.
+
 
 ## 2010-10-11  Release 0.01
 
