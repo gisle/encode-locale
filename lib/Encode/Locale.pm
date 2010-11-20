@@ -38,6 +38,12 @@ unless ($ENCODING_LOCALE) {
     eval {
 	require I18N::Langinfo;
 	$ENCODING_LOCALE = I18N::Langinfo::langinfo(I18N::Langinfo::CODESET());
+
+	# Workaround of Encode < v2.25.  The "646" encoding  alias was
+	# introducted in Encode-2.25, but we don't want to require that version
+	# quite yet.  Should avoid the CPAN testers failure reported from
+	# openbsd-4.7/perl-5.10.0 combo.
+	$ENCODING_LOCALE = "ascii" if $ENCODING_LOCALE eq "646";
     };
     $ENCODING_LOCALE ||= $ENCODING_CONSOLE_IN;
 }
