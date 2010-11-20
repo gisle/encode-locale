@@ -128,8 +128,8 @@ Encode::Locale - Determine the locale encoding
 
   $string = decode(locale => $octets);
 
-  binmode(STDIN, ":encoding(locale)");
-  binmode(STDOUT, ":encoding(locale)");
+  binmode(STDIN, ":encoding(console_in)");
+  binmode(STDOUT, ":encoding(console_out)");
 
 =head1 DESCRIPTION
 
