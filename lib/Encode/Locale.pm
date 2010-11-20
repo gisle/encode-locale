@@ -126,7 +126,7 @@ This will decode the command line arguments to perl (the C<@ARGV> array) in-plac
 
 The function will by default croak if not all the command line arguments can
 decoded.  A $check argument can be passed to modify this behaviour.  Passing
-C<Encode::FS_DEFAULT> will replace bad characters with "\x{FFFD}", the
+C<Encode::FB_DEFAULT> will replace bad characters with "\x{FFFD}", the
 Unicode replacement character. See L<Encode/"Handling Malformed Data"> for details.
 
 =item env( $key )
