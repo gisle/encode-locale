@@ -136,9 +136,10 @@ Encode::Locale - Determine the locale encoding
   }
 
   # Processing file names passed in as arguments
-  $file = decode(locale => $ARGV[0]);
-  open(my $fh, "<", encode(locale_fs => $filename))
-     || die "Can't open '$filename': $!";
+  my $uni_filename = decode(locale => $ARGV[0]);
+  open(my $fh, "<", encode(locale_fs => $uni_filename))
+     || die "Can't open '$uni_filename': $!";
+  binmode($fh, ":encoding(locale)");
   ...
 
 =head1 DESCRIPTION
