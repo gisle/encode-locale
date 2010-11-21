@@ -126,10 +126,18 @@ Encode::Locale - Determine the locale encoding
   use Encode::Locale;
   use Encode;
 
-  $string = decode(locale => $octets);
+  $string = decode(locale => $bytes);
+  $bytes = encode(locale => $string);
 
   binmode(STDIN, ":encoding(console_in)");
   binmode(STDOUT, ":encoding(console_out)");
+  binmode(STDERR, ":encoding(console_out)");
+
+  # Processing file names passed in as arguments
+  $file = decode(locale => $ARGV[0]);
+  open(my $fh, "<", encode(locale_fs => $filename))
+     || die "Can't open '$filename': $!";
+  ...
 
 =head1 DESCRIPTION
 
