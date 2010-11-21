@@ -129,9 +129,11 @@ Encode::Locale - Determine the locale encoding
   $string = decode(locale => $bytes);
   $bytes = encode(locale => $string);
 
-  binmode(STDIN, ":encoding(console_in)");
-  binmode(STDOUT, ":encoding(console_out)");
-  binmode(STDERR, ":encoding(console_out)");
+  if (-t) {
+      binmode(STDIN, ":encoding(console_in)");
+      binmode(STDOUT, ":encoding(console_out)");
+      binmode(STDERR, ":encoding(console_out)");
+  }
 
   # Processing file names passed in as arguments
   $file = decode(locale => $ARGV[0]);
@@ -141,17 +143,39 @@ Encode::Locale - Determine the locale encoding
 
 =head1 DESCRIPTION
 
-Perl uses Unicode to represent strings internally but many of the interfaces it
-has to the outside world is still byte based.  Programs therefore needs to decode
-strings that enter the program from the outside and encode them again on the way
-out.
+In many applications it's wise to let Perl use Unicode for the strings it
+processes.  Most of the interfaces Perl has to the outside world is still byte
+based.  Programs therefore needs to decode byte strings that enter the program
+from the outside and encode them again on the way out.
 
-The POSIX locale system is used to specify both the language conventions to use
-and the prefered character set to consume and output.  This module looks up the
-charset (called a CODESET in the locale jargon) and arrange for the L<Encode>
-module to know this encoding under the name "locale".
+The POSIX locale system is used to specify both the language conventions
+requested by the user and the preferred character set to consume and
+output.  The C<Encode::Locale> module looks up the charset and encoding (called
+a CODESET in the locale jargon) and arrange for the L<Encode> module to know
+this encoding under the name "locale".  It means bytes obtained from the
+environment can be converted to Unicode strings by calling C<<
+Encode::encode(locale => $bytes) >> and converted back again with C<<
+Encode::decode(locale => $string) >>.
 
-In addition the following functions and variables are provided:
+Where file systems interfaces pass file names in and out of the program we also
+need care.  The trend is for operating systems to use a fixed file encoding
+that don't actually depend on the locale; and this module determines the most
+appropriate encoding for file names. The L<Encode> module will know this
+encoding under the name "locale_fs".  For traditional Unix systems this will
+be an alias to the same encoding as "locale".
+
+For programs running in a terminal window (called a "Console" on some systems)
+the "locale" encoding is usually a good choice for what to expect as input and
+output.  Some systems allows us to query the encoding set for the terminal and
+C<Encode::Locale> will do that if available and make these encodings known
+under the C<Encode> aliases "console_in" and "console_out".  For systems where
+we can't determine the terminal encoding these will be aliased as the same
+encoding as "locale".  The advice is to use "console_in" for input known to
+come from the terminal and "console_out" for output known to go from the
+terminal.
+
+In addition to arranging for various Encode aliases the following functions and
+variables are provided:
 
 =over
 
