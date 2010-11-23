@@ -1,3 +1,15 @@
+## 2010-10-23  Release 0.04
+
+Look up the ANSI code page on Windows and alias this one as the "locale"
+encoding.
+
+Providide the reinit() function to be called if something is changed
+in the locale and you need to re-initialize the encodings set up by
+this module.
+
+Improved documentation.
+
+
 ## 2010-10-20  Release 0.03
 
 Changed the default for decode_argv() to match Encode's default.
