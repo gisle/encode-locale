@@ -22,6 +22,15 @@ sub DEBUG () { 0 }
 
 sub _init {
     if ($^O eq "MSWin32") {
+	# Try to obtain what the Windows ANSI code page is
+	eval {
+	    require Win32::API;
+	    if (Win32::API->Import('kernel32', 'int GetACP()')) {
+		my $cp = GetACP();
+		$ENCODING_LOCALE = "cp$cp";
+	    }
+	};
+
 	# If we have the Win32::Console module installed we can ask
 	# it for the code set to use
 	eval {
