@@ -27,7 +27,7 @@ sub _init {
 	    require Win32::API;
 	    if (Win32::API->Import('kernel32', 'int GetACP()')) {
 		my $cp = GetACP();
-		$ENCODING_LOCALE = "cp$cp";
+		$ENCODING_LOCALE = "cp$cp" if $cp;
 	    }
 	};
 
