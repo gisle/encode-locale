@@ -247,6 +247,56 @@ L<Encode> know these encodings as "console_in" and "console_out".
 
 =back
 
+=head1 NOTES
+
+This table summarizes the mapping of the encodings set up
+by the C<Encode::Locale> module:
+
+  Encode      |         |              |
+  Alias       | Windows | Mac OS X     | POSIX
+  ------------+---------+--------------+------------
+  locale      | ANSI    | nl_langinfo  | nl_langinfo
+  locale_fs   | ANSI    | UTF-8        | nl_langinfo
+  console_in  | OEM     | nl_langinfo  | nl_langinfo
+  console_out | OEM     | nl_langinfo  | nl_langinfo
+
+=head2 Windows
+
+Windows has basically 2 sets of APIs.  A wide API (based on passing UTF-16
+strings) and a byte based API based a character set called ANSI.  The
+regular Perl interfaces to the OS currently only uses the ANSI APIs.
+Unfortunately ANSI is not a single character set.
+
+The encoding that corresponds to ANSI varies between different editions of
+Windows.  For many western editions of Windows ANSI corresponds to CP-1252
+which is a character set similar to ISO-8859-1.  Conceptually the ANSI
+character set is a similar concept to the POSIX locale CODESET so this module
+figures out what the ANSI code page is and make this available as
+$ENCODING_LOCALE and the "locale" Encoding alias.
+
+Windows systems also operate with another byte based character set.
+It's called the OEM code page.  This is the encoding that the Console
+takes as input and output.  It's common for the OEM code page to
+differ from the ANSI code page.
+
+=head2 Mac OS X
+
+On Mac OS X the file system encoding is always UTF-8 while the locale
+can otherwise be set up as normal for POSIX systems.
+
+File names on Mac OS X will at the OS-level be converted to
+NFD form.  A file created by passing a NFC-filename will come
+in NFD from from readdir().  See L<Unicode::Normalize> for details
+of NFD/NFC.
+
+=head2 POSIX (Linux and other Unixes)
+
+File systems might vary in what encoding is to be used for
+filenames.  Since this module has no way to actually figure out
+what the is correct it goes with the best guess which is to
+assume filenames are encoding according to the current locale.
+Users are adviced to always specify UTF-8 as the locale charset.
+
 =head1 SEE ALSO
 
 L<I18N::Langinfo>, L<Encode>
