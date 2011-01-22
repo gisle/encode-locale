@@ -19,6 +19,7 @@ WriteMakefile(
         recommends => {
             'I18N::Langinfo' => 0,
 	    'Win32::Console' => 0,
+	    'Encode::UTF8Mac' => 0,
         },
     },
     BUILD_REQUIRES => {

@@ -61,7 +61,11 @@ sub _init {
     }
 
     if ($^O eq "darwin") {
-	$ENCODING_LOCALE_FS ||= "UTF-8";
+        eval {
+            require Encode::UTF8Mac;
+            $ENCODING_LOCALE_FS ||= "utf-8-mac";
+        };
+    $ENCODING_LOCALE_FS ||= "UTF-8";
     }
 
     # final fallback
@@ -252,13 +256,13 @@ L<Encode> know these encodings as "console_in" and "console_out".
 This table summarizes the mapping of the encodings set up
 by the C<Encode::Locale> module:
 
-  Encode      |         |              |
-  Alias       | Windows | Mac OS X     | POSIX
-  ------------+---------+--------------+------------
-  locale      | ANSI    | nl_langinfo  | nl_langinfo
-  locale_fs   | ANSI    | UTF-8        | nl_langinfo
-  console_in  | OEM     | nl_langinfo  | nl_langinfo
-  console_out | OEM     | nl_langinfo  | nl_langinfo
+  Encode      |         |                    |
+  Alias       | Windows | Mac OS X           | POSIX
+  ------------+---------+--------------------+------------
+  locale      | ANSI    | nl_langinfo        | nl_langinfo
+  locale_fs   | ANSI    | utf-8-mac or UTF-8 | nl_langinfo
+  console_in  | OEM     | nl_langinfo        | nl_langinfo
+  console_out | OEM     | nl_langinfo        | nl_langinfo
 
 =head2 Windows
 
@@ -288,6 +292,9 @@ File names on Mac OS X will at the OS-level be converted to
 NFD form.  A file created by passing a NFC-filename will come
 in NFD from from readdir().  See L<Unicode::Normalize> for details
 of NFD/NFC.
+
+"locale_fs" encoding uses "utf-8-mac" encoding if L<Encode::UTF8Mac>
+is available.
 
 =head2 POSIX (Linux and other Unixes)
 
