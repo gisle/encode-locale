@@ -1,3 +1,8 @@
+## 2011-01-23  Release 1.00
+
+Documentation tweaks.
+
+
 ## 2010-10-23  Release 0.04
 
 Look up the ANSI code page on Windows and alias this one as the "locale"

@@ -1,7 +1,7 @@
 package Encode::Locale;
 
 use strict;
-our $VERSION = "0.04";
+our $VERSION = "1.00";
 
 use base 'Exporter';
 our @EXPORT_OK = qw(
