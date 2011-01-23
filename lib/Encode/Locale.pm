@@ -292,9 +292,14 @@ On Mac OS X the file system encoding is always UTF-8 while the locale
 can otherwise be set up as normal for POSIX systems.
 
 File names on Mac OS X will at the OS-level be converted to
-NFD form.  A file created by passing a NFC-filename will come
+NFD-form.  A file created by passing a NFC-filename will come
 in NFD-form from readdir().  See L<Unicode::Normalize> for details
 of NFD/NFC.
+
+Actually, Apple does not follow the Unicode NFD standard since not all
+character ranges are decomposed.  The claim is that this avoids problems with
+round trip conversions from old Mac text encodings.  See L<Encode::UTF8Mac> for
+details.
 
 =head2 POSIX (Linux and other Unixes)
 
