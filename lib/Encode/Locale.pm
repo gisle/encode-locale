@@ -215,6 +215,13 @@ environment variable named $uni_key.
 The returned value will have the characters that can't be decoded replaced by
 "\x{FFFD}", the Unicode replacement character.
 
+There is no interface to request alternative CHECK behavior as for
+decode_argv().  If you need that you need to call encode/decode yourself.
+For example:
+
+    my $key = Encode::encode(locale => $uni_key, Encode::FB_CROAK);
+    my $uni_value = Encode::decode(locale => $ENV{$key}, Encode::FB_CROAK);
+
 =item reinit( )
 
 =item reinit( $encoding )
