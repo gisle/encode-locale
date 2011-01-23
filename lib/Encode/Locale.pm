@@ -293,7 +293,7 @@ can otherwise be set up as normal for POSIX systems.
 
 File names on Mac OS X will at the OS-level be converted to
 NFD form.  A file created by passing a NFC-filename will come
-in NFD from from readdir().  See L<Unicode::Normalize> for details
+in NFD-form from readdir().  See L<Unicode::Normalize> for details
 of NFD/NFC.
 
 =head2 POSIX (Linux and other Unixes)
