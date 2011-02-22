@@ -78,8 +78,9 @@ sub _init {
 _init();
 Encode::Alias::define_alias(sub {
     no strict 'refs';
+    no warnings 'once';
     return ${"ENCODING_" . uc(shift)};
-}, "locale");
+});
 
 sub _flush_aliases {
     no strict 'refs';
