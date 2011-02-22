@@ -228,7 +228,7 @@ For example:
 =item reinit( $encoding )
 
 Reinitialize the encodings from the locale.  You want to call this function if
-changed anything in the environment that might influence the locale.
+you changed anything in the environment that might influence the locale.
 
 This function will croak if the determined encoding isn't recognized by
 the Encode module.
