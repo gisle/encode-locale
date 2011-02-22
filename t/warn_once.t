@@ -2,7 +2,9 @@
 use strict;
 
 use Test;
-plan tests => 1;
+BEGIN {
+    plan tests => 2;
+}
 my @warns;
 BEGIN {
     $SIG{__WARN__} = sub { push @warns, @_ };
@@ -10,6 +12,10 @@ BEGIN {
 
 use Encode::Locale;
 
+BEGIN {
+    use Encode;
+    my $a = encode("UTF-8", "foo\xFF");
+    ok $a, "foo\xC3\xBF";
+}
+
 ok "@warns", "";
-
-
