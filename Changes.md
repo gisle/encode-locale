@@ -1,3 +1,8 @@
+## 2011-02-22  Release 1.01
+
+Avoid compilation warnings (RT#65975).  Thanks to Goro Fuji.
+
+
 ## 2011-01-23  Release 1.00
 
 Documentation tweaks.
