@@ -1,3 +1,8 @@
+## 2011-03-28  Release 1.02
+
+Added supporting hacks for GB18030 and roman8. [RT#66373] [RT#67010]
+
+
 ## 2011-02-22  Release 1.01
 
 Avoid compilation warnings (RT#65975).  Thanks to Goro Fuji.
