@@ -74,7 +74,19 @@ sub _init {
     $ENCODING_CONSOLE_OUT ||= $ENCODING_CONSOLE_IN;
 
     unless (Encode::find_encoding($ENCODING_LOCALE)) {
-	die "The locale codeset ($ENCODING_LOCALE) isn't one that perl can decode, stopped";
+	my $foundit;
+	if (lc($ENCODING_LOCALE) eq "gb18030") {
+	    eval {
+		require Encode::HanExtra;
+	    };
+	    if ($@) {
+		die "Need Encode::HanExtra to be installed to support locale codeset ($ENCODING_LOCALE), stopped";
+	    }
+	    $foundit++ if Encode::find_encoding($ENCODING_LOCALE);
+	}
+	die "The locale codeset ($ENCODING_LOCALE) isn't one that perl can decode, stopped"
+	    unless $foundit;
+
     }
 }
 
