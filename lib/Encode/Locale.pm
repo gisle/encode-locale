@@ -56,6 +56,9 @@ sub _init {
 	    # quite yet.  Should avoid the CPAN testers failure reported from
 	    # openbsd-4.7/perl-5.10.0 combo.
 	    $ENCODING_LOCALE = "ascii" if $ENCODING_LOCALE eq "646";
+
+	    # https://rt.cpan.org/Ticket/Display.html?id=66373
+	    $ENCODING_LOCALE = "hp-roman8" if $^O eq "hpux" && $ENCODING_LOCALE eq "roman8";
 	};
 	$ENCODING_LOCALE ||= $ENCODING_CONSOLE_IN;
     }
