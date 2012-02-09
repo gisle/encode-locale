@@ -41,7 +41,7 @@ sub _init {
 	    $ENCODING_CONSOLE_OUT = "cp$cp" if $cp;
 	};
 	# Invoking the 'chcp' program might also work
-	if (!$ENCODING_CONSOLE_IN && qx(chcp) =~ /^Active code page: (\d+)/) {
+	if (!$ENCODING_CONSOLE_IN && (qx(chcp) || '') =~ /^Active code page: (\d+)/) {
 	    $ENCODING_CONSOLE_IN = "cp$1";
 	}
     }
