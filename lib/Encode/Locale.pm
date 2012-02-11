@@ -170,14 +170,14 @@ Encode::Locale - Determine the locale encoding
 =head1 DESCRIPTION
 
 In many applications it's wise to let Perl use Unicode for the strings it
-processes.  Most of the interfaces Perl has to the outside world is still byte
-based.  Programs therefore needs to decode byte strings that enter the program
+processes.  Most of the interfaces Perl has to the outside world are still byte
+based.  Programs therefore need to decode byte strings that enter the program
 from the outside and encode them again on the way out.
 
 The POSIX locale system is used to specify both the language conventions
 requested by the user and the preferred character set to consume and
 output.  The C<Encode::Locale> module looks up the charset and encoding (called
-a CODESET in the locale jargon) and arrange for the L<Encode> module to know
+a CODESET in the locale jargon) and arranges for the L<Encode> module to know
 this encoding under the name "locale".  It means bytes obtained from the
 environment can be converted to Unicode strings by calling C<<
 Encode::encode(locale => $bytes) >> and converted back again with C<<
@@ -323,7 +323,7 @@ File systems might vary in what encoding is to be used for
 filenames.  Since this module has no way to actually figure out
 what the is correct it goes with the best guess which is to
 assume filenames are encoding according to the current locale.
-Users are adviced to always specify UTF-8 as the locale charset.
+Users are advised to always specify UTF-8 as the locale charset.
 
 =head1 SEE ALSO
 
