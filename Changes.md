@@ -1,3 +1,8 @@
+## 2012-01-11  Release 1.03
+
+Documentation spelling fixes and tweaks to improve testing on Windows.
+
+
 ## 2011-03-28  Release 1.02
 
 Added supporting hacks for GB18030 and roman8. [RT#66373] [RT#67010]
