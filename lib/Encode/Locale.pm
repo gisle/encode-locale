@@ -22,27 +22,31 @@ sub DEBUG () { 0 }
 
 sub _init {
     if ($^O eq "MSWin32") {
-	# Try to obtain what the Windows ANSI code page is
-	eval {
-	    require Win32::API;
-	    if (Win32::API->Import('kernel32', 'int GetACP()')) {
-		my $cp = GetACP();
-		$ENCODING_LOCALE = "cp$cp" if $cp;
-	    }
-	};
+	unless ($ENCODING_LOCALE) {
+	    # Try to obtain what the Windows ANSI code page is
+	    eval {
+		require Win32::API;
+		if (Win32::API->Import('kernel32', 'int GetACP()')) {
+		    my $cp = GetACP();
+		    $ENCODING_LOCALE = "cp$cp" if $cp;
+		}
+	    };
+	}
 
-	# If we have the Win32::Console module installed we can ask
-	# it for the code set to use
-	eval {
-	    require Win32::Console;
-	    my $cp = Win32::Console::InputCP();
-	    $ENCODING_CONSOLE_IN = "cp$cp" if $cp;
-	    $cp = Win32::Console::OutputCP();
-	    $ENCODING_CONSOLE_OUT = "cp$cp" if $cp;
-	};
-	# Invoking the 'chcp' program might also work
-	if (!$ENCODING_CONSOLE_IN && (qx(chcp) || '') =~ /^Active code page: (\d+)/) {
-	    $ENCODING_CONSOLE_IN = "cp$1";
+	unless ($ENCODING_CONSOLE_IN) {
+	    # If we have the Win32::Console module installed we can ask
+	    # it for the code set to use
+	    eval {
+		require Win32::Console;
+		my $cp = Win32::Console::InputCP();
+		$ENCODING_CONSOLE_IN = "cp$cp" if $cp;
+		$cp = Win32::Console::OutputCP();
+		$ENCODING_CONSOLE_OUT = "cp$cp" if $cp;
+	    };
+	    # Invoking the 'chcp' program might also work
+	    if (!$ENCODING_CONSOLE_IN && (qx(chcp) || '') =~ /^Active code page: (\d+)/) {
+		$ENCODING_CONSOLE_IN = "cp$1";
+	    }
 	}
     }
 
@@ -88,6 +92,8 @@ sub _init {
 	    unless $foundit;
 
     }
+
+    # use Data::Dump; ddx $ENCODING_LOCALE, $ENCODING_LOCALE_FS, $ENCODING_CONSOLE_IN, $ENCODING_CONSOLE_OUT;
 }
 
 _init();
