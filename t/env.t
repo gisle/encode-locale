@@ -15,14 +15,7 @@ ok(env("foo", undef), "baz");
 ok(env("foo"), undef);
 ok(!exists $ENV{foo});
 
-{
-   local $SIG{__WARN__} = sub {
-       my $warn = shift;
-	   die $warn if $warn and $warn !~ /Subroutine Encode::Locale::GetACP redefined/;
-   };
-   Encode::Locale::reinit("cp1252");
-}
-
+Encode::Locale::reinit("cp1252");
 $ENV{"m\xf6ney"} = "\x80uro";
 ok(env("m\xf6ney", "\x{20AC}"), "\x{20AC}uro");
 ok(env("m\xf6ney"), "\x{20AC}");

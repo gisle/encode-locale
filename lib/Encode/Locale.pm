@@ -25,8 +25,11 @@ sub _init {
 	unless ($ENCODING_LOCALE) {
 	    # Try to obtain what the Windows ANSI code page is
 	    eval {
-		require Win32::API;
-		if (Win32::API->Import('kernel32', 'int GetACP()')) {
+		unless (defined &GetACP) {
+		    require Win32::API;
+		    Win32::API->Import('kernel32', 'int GetACP()');
+		};
+		if (defined &GetACP) {
 		    my $cp = GetACP();
 		    $ENCODING_LOCALE = "cp$cp" if $cp;
 		}
