@@ -266,7 +266,7 @@ L<Encode> know this encoding as "locale".
 
 =item $ENCODING_LOCALE_FS
 
-The encoding name determined to be suiteable for file system interfaces
+The encoding name determined to be suitable for file system interfaces
 involving file names.
 L<Encode> know this encoding as "locale_fs".
 
