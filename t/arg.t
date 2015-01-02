@@ -1,29 +1,34 @@
 #!perl -w
 
 use strict;
-use Test;
-plan tests => 1;
+use warnings;
+use Test::More tests => 1;
 
 use Encode::Locale qw($ENCODING_LOCALE decode_argv);
 
-print "# ENCODING_LOCALE is $ENCODING_LOCALE\n";
+note "ENCODING_LOCALE is $ENCODING_LOCALE\n";
 decode_argv();
 
-my $i;
+my $i = 0;
 for my $arg (@ARGV) {
-    print "# ", ++$i, ": \"";
-    for (split(//, $arg)) {
+    note $i++ . ': ' . prettify($arg);
+}
+
+sub prettify {
+    my $text = shift;
+    my @r;
+    for (split(//, $text)) {
 	if (ord() > 32 && ord() < 128) {
-	    print $_;
+	    push @r, $_;
 	}
 	elsif (ord() < 256) {
-	    printf "\\x%02X", ord();
+	    push @r, sprintf "\\x%02X", ord();
 	}
 	else {
-	    printf "\\x{%04X}", ord();
+	    push @r, sprintf "\\x{%04X}", ord();
 	}
     }
-    print "\"\n";
+    join '', @r;
 }
 
 # fake it :-)

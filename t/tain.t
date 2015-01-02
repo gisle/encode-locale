@@ -1,12 +1,11 @@
 #!perl -Tw
+
 use strict;
+use warnings;
 
 # taint mode testing as seen in WWW::Mechanize
 
-use Test;
-BEGIN {
-    plan tests => 1;
-}
+use Test::More tests => 1;
 my @warns;
 BEGIN {
     $SIG{__WARN__} = sub { push @warns, @_ };
@@ -17,5 +16,4 @@ BEGIN {
 
 require Encode::Locale;
 
-
-ok "@warns", "";
+is "@warns", "", 'no warnings';
