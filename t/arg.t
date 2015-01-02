@@ -2,16 +2,29 @@
 
 use strict;
 use warnings;
-use Test::More tests => 1;
+use Test::More;
 
 use Encode::Locale qw($ENCODING_LOCALE decode_argv);
+use Encode;
+use utf8;
 
-note "ENCODING_LOCALE is $ENCODING_LOCALE\n";
+diag "ENCODING_LOCALE is $ENCODING_LOCALE\n";
+my @chars = qw(funny chars š ™);
+my @octets = map { Encode::encode(locale => $_) } @chars;
+@ARGV = @octets;
+
+plan tests => scalar(@ARGV);
+
 decode_argv();
 
-my $i = 0;
-for my $arg (@ARGV) {
-    note $i++ . ': ' . prettify($arg);
+TODO: {
+    local $TODO = "ARGV decoding";
+    for (my $i = 0; $i < @ARGV; $i++) {
+        is $chars[$i], $ARGV[$i],
+            "chars(" . prettify($chars[$i]) .
+            ") octets(" . prettify($octets[$i]) .
+            ") argv(" . prettify($ARGV[$i]) . ")";
+    }
 }
 
 sub prettify {
@@ -30,6 +43,3 @@ sub prettify {
     }
     join '', @r;
 }
-
-# fake it :-)
-ok(1);
