@@ -25,31 +25,60 @@ sub _init {
 	unless ($ENCODING_LOCALE) {
 	    # Try to obtain what the Windows ANSI code page is
 	    eval {
-		unless (defined &GetACP) {
+		unless (defined &GetConsoleCP) {
+		    require Win32;
+                    # no point falling back to Win32::GetConsoleCP from this
+                    # as added same time, 0.45
+                    eval { Win32::GetConsoleCP() };
+                    # manually "import" it since Win32->import refuses
+		    *GetConsoleCP = sub { &Win32::GetConsoleCP } unless $@;
+		}
+		unless (defined &GetConsoleCP) {
 		    require Win32::API;
-		    Win32::API->Import('kernel32', 'int GetACP()');
-		};
-		if (defined &GetACP) {
-		    my $cp = GetACP();
+		    Win32::API->Import('kernel32', 'int GetConsoleCP()');
+		}
+		if (defined &GetConsoleCP) {
+		    my $cp = GetConsoleCP();
 		    $ENCODING_LOCALE = "cp$cp" if $cp;
 		}
 	    };
 	}
 
 	unless ($ENCODING_CONSOLE_IN) {
-	    # If we have the Win32::Console module installed we can ask
-	    # it for the code set to use
-	    eval {
-		require Win32::Console;
-		my $cp = Win32::Console::InputCP();
-		$ENCODING_CONSOLE_IN = "cp$cp" if $cp;
-		$cp = Win32::Console::OutputCP();
-		$ENCODING_CONSOLE_OUT = "cp$cp" if $cp;
-	    };
-	    # Invoking the 'chcp' program might also work
-	    if (!$ENCODING_CONSOLE_IN && (qx(chcp) || '') =~ /^Active code page: (\d+)/) {
-		$ENCODING_CONSOLE_IN = "cp$1";
+            # only test one since set together
+            unless (defined &GetInputCP) {
+                eval {
+                    require Win32;
+                    eval { Win32::GetConsoleCP() };
+                    # manually "import" it since Win32->import refuses
+                    *GetInputCP = sub { &Win32::GetConsoleCP } unless $@;
+                    *GetOutputCP = sub { &Win32::GetConsoleOutputCP } unless $@;
+                };
+                unless (defined &GetInputCP) {
+                    eval {
+                        # try Win32::Console module for codepage to use
+                        require Win32::Console;
+                        eval { Win32::Console::InputCP() };
+                        *GetInputCP = sub { &Win32::Console::InputCP }
+                            unless $@;
+                        *GetOutputCP = sub { &Win32::Console::OutputCP }
+                            unless $@;
+                    };
+                }
+                unless (defined &GetInputCP) {
+                    # final fallback
+                    *GetInputCP = *GetOutputCP = sub {
+                        # another fallback that could work is:
+                        # reg query HKLM\System\CurrentControlSet\Control\Nls\CodePage /v ACP
+                        ((qx(chcp) || '') =~ /^Active code page: (\d+)/)
+                            ? $1 : ();
+                    };
+                }
 	    }
+            my $cp = GetInputCP();
+            $ENCODING_CONSOLE_IN = "cp$cp" if $cp;
+            $cp = GetOutputCP();
+            $ENCODING_CONSOLE_OUT = "cp$cp" if $cp;
 	}
     }
 
