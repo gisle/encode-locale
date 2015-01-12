@@ -206,8 +206,7 @@ C<Encode::Locale> will do that if available and make these encodings known
 under the C<Encode> aliases "console_in" and "console_out".  For systems where
 we can't determine the terminal encoding these will be aliased as the same
 encoding as "locale".  The advice is to use "console_in" for input known to
-come from the terminal and "console_out" for output known to go from the
-terminal.
+come from the terminal and "console_out" for output to the terminal.
 
 In addition to arranging for various Encode aliases the following functions and
 variables are provided:
