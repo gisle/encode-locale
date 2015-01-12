@@ -21,8 +21,8 @@ WriteMakefile(
 	    'Win32::Console' => 0,
         },
     },
-    BUILD_REQUIRES => {
-        Test => 0,
+    TEST_REQUIRES => {
+        'Test::More' => 0,
     },
 );
 
@@ -35,10 +35,18 @@ BEGIN {
         META_ADD => 6.45,
         MIN_PERL_VERSION => 6.48,
         BUILD_REQUIRES => 6.56,
+        TEST_REQUIRES => 6.64,
     );
     undef(*WriteMakefile);
     *WriteMakefile = sub {
         my %arg = @_;
+        unless (eval { ExtUtils::MakeMaker->VERSION($mm_req{TEST_REQUIRES}) }) {
+            warn "Downgrading TEST_REQUIRES" if $developer;
+            $arg{BUILD_REQUIRES} = {
+                %{ $arg{BUILD_REQUIRES} },
+                %{ delete $arg{TEST_REQUIRES} },
+            };
+        }
         for (keys %mm_req) {
             unless (eval { ExtUtils::MakeMaker->VERSION($mm_req{$_}) }) {
                 warn "$_ $@" if $developer;

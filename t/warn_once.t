@@ -1,10 +1,9 @@
 #!perl -w
-use strict;
 
-use Test;
-BEGIN {
-    plan tests => 2;
-}
+use strict;
+use warnings;
+
+use Test::More tests => 2;
 my @warns;
 BEGIN {
     $SIG{__WARN__} = sub { push @warns, @_ };
@@ -18,4 +17,4 @@ BEGIN {
     ok $a, "foo\xC3\xBF";
 }
 
-ok "@warns", "";
+is "@warns", "", 'no warnings';
