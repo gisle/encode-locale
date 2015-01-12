@@ -364,7 +364,7 @@ Users are advised to always specify UTF-8 as the locale charset.
 
 =head1 SEE ALSO
 
-L<I18N::Langinfo>, L<Encode>
+L<I18N::Langinfo>, L<Encode>, L<Term::Encoding>
 
 =head1 AUTHOR
 
