@@ -1,3 +1,23 @@
+## 2015-01-12  Release 1.04
+
+Ed J (5):
+
+* Actually include all the tests in the MANIFEST
+* use Test::More and warnings
+* Tidy t/alias.t
+* t/arg.t TODO some actual ARGV testing
+* Use Win32::GetConsoleCP/GetConsoleOutputCP if available
+
+Gisle Aas (3):
+
+* Documentation spell fix
+* SEE ALSO Term::Encoding [RT#98138]
+
+David Steinbrunner (1):
+
+* typo fix
+
+
 ## 2012-01-11  Release 1.03
 
 Documentation spelling fixes and tweaks to improve testing on Windows.
