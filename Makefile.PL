@@ -18,7 +18,9 @@ WriteMakefile(
         },
         recommends => {
             'I18N::Langinfo' => 0,
-	    'Win32::Console' => 0,
+            ($^O eq 'MSWin32'
+                ? ('Win32::Console' => 0)
+                : ()),
         },
     },
     TEST_REQUIRES => {
