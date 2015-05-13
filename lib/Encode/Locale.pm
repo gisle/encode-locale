@@ -22,28 +22,20 @@ sub DEBUG () { 0 }
 
 sub _init {
     if ($^O eq "MSWin32") {
-	unless ($ENCODING_LOCALE) {
+        unless ($ENCODING_LOCALE) {
 	    # Try to obtain what the Windows ANSI code page is
 	    eval {
-		unless (defined &GetConsoleCP) {
-		    require Win32;
-                    # no point falling back to Win32::GetConsoleCP from this
-                    # as added same time, 0.45
-                    eval { Win32::GetConsoleCP() };
-                    # manually "import" it since Win32->import refuses
-		    *GetConsoleCP = sub { &Win32::GetConsoleCP } unless $@;
-		}
-		unless (defined &GetConsoleCP) {
+		unless (defined &GetACP) {
 		    require Win32::API;
-		    Win32::API->Import('kernel32', 'int GetConsoleCP()');
-		}
-		if (defined &GetConsoleCP) {
-		    my $cp = GetConsoleCP();
+		    Win32::API->Import('kernel32', 'int GetACP()');
+		};
+		if (defined &GetACP) {
+		    my $cp = GetACP();
 		    $ENCODING_LOCALE = "cp$cp" if $cp;
 		}
 	    };
 	}
-
+	
 	unless ($ENCODING_CONSOLE_IN) {
             # only test one since set together
             unless (defined &GetInputCP) {
