@@ -1,3 +1,13 @@
+## 2015-06-09  Release 1.05
+
+Mats Peterson (1):
+      Use GetACP() to get the ANSI code page like before
+
+Thomas Sibley (1):
+      Conditionalize the Win32::Console recommendation
+
+
+
 ## 2015-01-12  Release 1.04
 
 Ed J (5):
@@ -16,6 +26,7 @@ Gisle Aas (3):
 David Steinbrunner (1):
 
 * typo fix
+
 
 
 ## 2012-01-11  Release 1.03
