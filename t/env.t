@@ -20,6 +20,9 @@ $ENV{"m\xf6ney"} = "\x80uro";
 is env("m\xf6ney", "\x{20AC}"), "\x{20AC}uro", 'env write retval encoded';
 is env("m\xf6ney"), "\x{20AC}", 'env write worked';
 is $ENV{"m\xf6ney"}, "\x80", 'env affected %ENV';
-is env("\x{20AC}", 1), undef, 'env write retval old value';
-is env("\x{20AC}"), 1, 'env write worked';
-is $ENV{"\x80"}, 1, 'env affected %ENV';
+SKIP: {
+        skip "Cygwin doesn't support Unicode env variables", 3 if (($^O eq 'cygwin') || ($^O eq 'MSWin32'));
+        is env("\x{20AC}", 1), undef, 'env write retval old value';
+        is env("\x{20AC}"), 1, 'env write worked';
+        is $ENV{"\x80"}, 1, 'env affected %ENV';
+}
