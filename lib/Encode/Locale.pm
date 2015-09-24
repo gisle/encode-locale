@@ -1,5 +1,6 @@
 package Encode::Locale;
 
+use warnings;
 use strict;
 our $VERSION = "1.05";
 
@@ -366,6 +367,8 @@ L<I18N::Langinfo>, L<Encode>, L<Term::Encoding>
 =head1 AUTHOR
 
 Copyright 2010 Gisle Aas <gisle@aas.no>.
+
+=head1 LICENSE
 
 This library is free software; you can redistribute it and/or
 modify it under the same terms as Perl itself.
