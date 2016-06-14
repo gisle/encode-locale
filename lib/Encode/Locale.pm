@@ -27,8 +27,8 @@ sub _init {
 	    eval {
 		unless (defined &GetACP) {
 		    require Win32;
-                    eval { Win32::GetACP() };
-		    *GetACP = sub { &Win32::GetACP } unless $@;
+		    *GetACP = sub { &Win32::GetACP }
+                if defined &Win32::GetACP;
 		}
 		unless (defined &GetACP) {
 		    require Win32::API;
@@ -46,20 +46,20 @@ sub _init {
             unless (defined &GetInputCP) {
                 eval {
                     require Win32;
-                    eval { Win32::GetConsoleCP() };
                     # manually "import" it since Win32->import refuses
-                    *GetInputCP = sub { &Win32::GetConsoleCP } unless $@;
-                    *GetOutputCP = sub { &Win32::GetConsoleOutputCP } unless $@;
+                    *GetInputCP = sub { &Win32::GetConsoleCP }
+                        if defined &Win32::GetConsoleCP;
+                    *GetOutputCP = sub { &Win32::GetConsoleOutputCP }
+                        if defined &Win32::GetConsoleOutputCP;
                 };
                 unless (defined &GetInputCP) {
                     eval {
                         # try Win32::Console module for codepage to use
                         require Win32::Console;
-                        eval { Win32::Console::InputCP() };
                         *GetInputCP = sub { &Win32::Console::InputCP }
-                            unless $@;
+                            if defined &Win32::Console::InputCP;
                         *GetOutputCP = sub { &Win32::Console::OutputCP }
-                            unless $@;
+                            if defined &Win32::Console::OutputCP;
                     };
                 }
                 unless (defined &GetInputCP) {
